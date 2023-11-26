@@ -1,0 +1,38 @@
+﻿@model PlanoContaViewModel
+
+<!-- Adicione as referências ao Bootstrap CSS e JS no cabeçalho da página -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="@Url.Content("~/js/PlanoConta/PlanoConta.js")"></script>
+
+<h1>Cadastrar Plano de Conta</h1>
+
+<!-- Formulário de Cadastro -->
+<form asp-action="Cadastrar" method="post">
+    <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <input type="text" class="form-control" id="descricao" name="Descricao" required asp-for="Descricao">
+    </div>
+    <div class="form-group">
+        <label asp-for="Tipo">Tipo:</label>
+        <select asp-for="Tipo" class="form-control" asp-items="@Model.TiposDisponiveis" required>
+            <option value="">Selecione...</option>
+        </select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button type="button" class="btn btn-secondary" onclick="Voltar()">Cancelar</button>
+    </div>
+</form>
+
+<!-- Mensagem de Confirmação -->
+@if (!string.IsNullOrEmpty(ViewBag.Mensagem))
+{
+    <div class="alert alert-success mt-3" role="alert">
+        @ViewBag.Mensagem
+    </div>
+}
