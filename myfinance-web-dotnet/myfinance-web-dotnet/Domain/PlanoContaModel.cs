@@ -7,5 +7,7 @@ namespace myfinance_web_dotnet.Domain
         public int Id { get; set; }
         public string Descricao { get; set; }
         public TipoConta Tipo { get; set; }
+        public bool Ativo { get; set; }
+        public virtual ICollection<TransacaoModel> Transacoes { get; set; } = new List<TransacaoModel>();
     }
 }

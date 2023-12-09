@@ -23,7 +23,7 @@ namespace myfinance_web_dotnet.Services
 
         public List<PlanoContaModel> ListarPlanoContas()
         {
-            return _financeDbContext.PlanoConta.ToList();
+            return _financeDbContext.PlanoConta.Where(p => p.Ativo == true).ToList();
         }
 
         public PlanoContaModel RetornarRegistro(int? id)
@@ -34,7 +34,10 @@ namespace myfinance_web_dotnet.Services
         public void Salvar(PlanoContaModel model)
         {
             if (model.Id == 0)
+            {
+                model.Ativo = true;
                 _financeDbContext.PlanoConta.Add(model);
+            }
             else
             {
                 _financeDbContext.PlanoConta.Attach(model);

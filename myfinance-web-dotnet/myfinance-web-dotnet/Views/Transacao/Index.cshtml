@@ -1,0 +1,63 @@
+﻿@model List<TransacaoViewModel>
+
+<!-- Adicione as referências ao Bootstrap CSS e JS no cabeçalho da página -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<h1>Lista de Transações</h1>
+
+<!-- Botão para cadastrar nova transacao -->
+<a href="@Url.Action("Cadastrar", "Transacao")" class="btn btn-primary mb-3">Nova Transação</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Histórico</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transacao in Model)
+        {
+            <tr>
+                <td>@transacao.Id</td>
+                <td>@transacao.Tipo</td>
+                <td>@transacao.Historico</td>
+                <td>
+                    <!-- Botão Editar -->
+                    <a href="@Url.Action("Cadastrar", "Transacao", new { id = transacao.Id })" class="btn btn-warning btn-sm">Editar</a>
+
+                    <!-- Botão Excluir com Popup de Confirmação -->
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal_@transacao.Id">
+                        Excluir
+                    </button>
+
+                    <!-- Modal de Confirmação de Exclusão -->
+                    <div class="modal fade" id="confirmDeleteModal_@transacao.Id" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmação de Exclusão</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza de que deseja excluir este registro?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <a href="@Url.Action("Delete", "Transacao", new { id = transacao.Id })" class="btn btn-danger">Excluir</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

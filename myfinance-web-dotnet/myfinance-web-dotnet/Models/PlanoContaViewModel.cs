@@ -8,7 +8,7 @@ namespace myfinance_web_dotnet.Models
         public int Id { get; set; }
         public string Descricao { get; set; }
         public TipoConta Tipo { get; set; }
-
+        public bool Ativo { get; set; }
         public List<SelectListItem> TiposDisponiveis
         {
             get

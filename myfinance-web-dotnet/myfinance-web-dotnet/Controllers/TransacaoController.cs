@@ -1,22 +1,29 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using myfinance_web_dotnet.Domain;
 using myfinance_web_dotnet.Models;
+using myfinance_web_dotnet.Services;
 using myfinance_web_dotnet.Services.Interface;
 using System.Diagnostics;
 
 namespace myfinance_web_dotnet.Controllers
 {
     [Route("[controller]")]
-    public class PlanoContaController : Controller
+    public class TransacaoController : Controller
     {
+
         private readonly ILogger<HomeController> _logger;
+        private readonly ITransacaoService _transacaoService;
         private readonly IPlanoContaService _planoContaService;
         private readonly IMapper _mapper;
 
-        public PlanoContaController(ILogger<HomeController> logger, IPlanoContaService _planoContaService, IMapper _mapper)
+        public TransacaoController(ILogger<HomeController> logger,
+            ITransacaoService _transacaoService,
+            IPlanoContaService _planoContaService,
+            IMapper _mapper)
         {
             this._logger = logger;
+            this._transacaoService = _transacaoService;
             this._planoContaService = _planoContaService;
             this._mapper = _mapper;
         }
@@ -24,7 +31,7 @@ namespace myfinance_web_dotnet.Controllers
         [Route("Index")]
         public IActionResult Index()
         {
-            return View(_mapper.Map<List<PlanoContaViewModel>>(_planoContaService.ListarPlanoContas()));
+            return View(_mapper.Map<List<TransacaoViewModel>>(_transacaoService.ListarTransacoes()));
         }
 
         [HttpGet]
@@ -32,21 +39,27 @@ namespace myfinance_web_dotnet.Controllers
         [Route("Cadastrar/{id}")]
         public IActionResult Cadastrar(int? id)
         {
-            if(id != null)
+            if (id != null)
             {
-                return View(_mapper.Map<PlanoContaViewModel>(_planoContaService.RetornarRegistro(id)));
+                var model = new TransacaoViewModel();
+
+                model = _mapper.Map<TransacaoViewModel>(_transacaoService.RetornarRegistro(id));
+                model.PlanosConta = _mapper.Map<List<PlanoContaViewModel>>(_planoContaService.ListarPlanoContas());
+
+                return View(model);
+                //return View(_mapper.Map<TransacaoViewModel>(_transacaoService.RetornarRegistro(id)));
             }
 
-            return View(new PlanoContaViewModel());
+            return View(new TransacaoViewModel { PlanosConta = _mapper.Map<List<PlanoContaViewModel>>(_planoContaService.ListarPlanoContas()) });
         }
 
 
         [HttpPost]
         [Route("Cadastrar")]
         [Route("Cadastrar/{id}")]
-        public IActionResult Cadastrar(PlanoContaViewModel planoContaViewModel)
+        public IActionResult Cadastrar(TransacaoViewModel model)
         {
-            _planoContaService.Salvar(_mapper.Map<PlanoContaModel>(planoContaViewModel));
+            _transacaoService.Salvar(_mapper.Map<TransacaoModel>(model));
 
             return RedirectToAction("Index");
         }
@@ -55,7 +68,7 @@ namespace myfinance_web_dotnet.Controllers
         [Route("Delete/{id}")]
         public IActionResult Delete(int id)
         {
-            _planoContaService.Excluir(id);
+            _transacaoService.Excluir(id);
 
             return RedirectToAction("Index");
         }
