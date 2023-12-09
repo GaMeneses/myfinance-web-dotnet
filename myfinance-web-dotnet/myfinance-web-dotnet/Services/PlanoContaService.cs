@@ -16,9 +16,13 @@ namespace myfinance_web_dotnet.Services
         public void Excluir(int id)
         {
             var item = _financeDbContext.PlanoConta.FirstOrDefault(p => p.Id == id);
-            _financeDbContext.PlanoConta.Attach(item);
-            _financeDbContext.PlanoConta.Remove(item);
-            _financeDbContext.SaveChanges();
+
+            if(item != null)
+            {
+                item.Ativo = false;
+                _financeDbContext.SaveChanges();
+            }
+
         }
 
         public List<PlanoContaModel> ListarPlanoContas()

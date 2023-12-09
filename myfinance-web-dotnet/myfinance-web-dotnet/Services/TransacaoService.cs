@@ -47,9 +47,9 @@ namespace myfinance_web_dotnet.Services
             if (item != null)
             {
                 item.Ativo = false;
+                _financeDbContext.SaveChanges();
             }
 
-            _financeDbContext.SaveChanges();
         }
 
     }
