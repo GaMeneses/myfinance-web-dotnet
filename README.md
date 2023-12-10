@@ -19,7 +19,7 @@ Além disto, a IDE utilizada no projeto foi [VisualStudio](https://visualstudio.
 
 1. Clone este repositório
 ```bash
-$ git clone https://github.com/GaMeneses/myfinance-web-dotnet/
+$ git clone https://github.com/GaMeneses/myfinance-web-dotnet.git
 ```
 
 2. Restaure as dependências do projeto
